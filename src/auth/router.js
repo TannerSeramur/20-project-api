@@ -27,16 +27,18 @@ authRouter.post('/signup', (req, res, next) => {
 });
 
 authRouter.post('/newRole', (req,res,next) => {
+  console.log(req.body);
+  
   let role = new Role(req.body);
   role.save()
   .then(role => {
-    res.status(200).send('here is a new role');
+    res.status(200).send(`here is a new role: ${role}`);
   })
   .catch(next);
 });
 
 // ✅  http post :3000/signin -a tanner:kona
-authRouter.post('/signin', auth('capability'), (req, res, next) => {
+authRouter.post('/signin', auth(), (req, res, next) => {
   res.cookie('auth', req.token);
   res.send(req.token);
 });

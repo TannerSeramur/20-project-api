@@ -90,7 +90,9 @@ users.methods.comparePassword = function(password) {
 users.methods.generateToken = function(type) {
   console.log('here🍩 ', this);
   
+  console.log(this.capabilities);
   let token = {
+    
     id: this._id,
     capabilities: this.acl.capabilities,
     type: type || 'user',

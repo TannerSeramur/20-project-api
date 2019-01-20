@@ -35,7 +35,7 @@ module.exports = (capability) => {
           _authenticate(user)
         })
         .catch(_authError);
-    }
+    };
 
     function _authBearer(authString) {
       return User.authenticateToken(authString)
@@ -44,6 +44,8 @@ module.exports = (capability) => {
     }
 
     function _authenticate(user) {
+      console.log('must have capability', capability);
+      
       if ( user && (!capability || (user.can(capability))) ) {
         req.user = user;
         req.token = user.generateToken();
