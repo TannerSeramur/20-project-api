@@ -26,16 +26,32 @@ authRouter.post('/signup', (req, res, next) => {
     .catch(next);
 });
 
-authRouter.post('/newRole', (req,res,next) => {
-  console.log(req.body);
+// authRouter.post('/newRole', (req,res,next) => {
+//   console.log(req.body);
   
+//   let role = new Role(req.body);
+//   role.save()
+//   .then(role => {
+//     res.status(200).send(`here is a new role: ${role}`);
+//   })
+//   .catch(next);
+// });
+
+authRouter.post('/newRole', (req, res, next) => {
   let role = new Role(req.body);
   role.save()
-  .then(role => {
-    res.status(200).send(`here is a new role: ${role}`);
-  })
-  .catch(next);
-});
+    .then(results => {
+      Role.findOne({_id: results._id})
+      .then(role => {
+        req.token = role.generateToken();
+        req.role = role;
+        res.set('token', req.token);
+        res.cookie('auth', req.token);
+        res.status(200).send(role.name);
+        })
+    })
+    .catch(next)
+})
 
 // ✅  http post :3000/signin -a tanner:kona
 authRouter.post('/signin', auth(), (req, res, next) => {
